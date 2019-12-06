@@ -1,6 +1,6 @@
 --[[
 
-@name Challenge 2
+@name Challenge 5
 @event Advent of Code 2019
 @author Nameless github.com/truemedian
 
