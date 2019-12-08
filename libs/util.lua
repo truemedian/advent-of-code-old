@@ -25,6 +25,12 @@ function util.map(tbl, fn, ...)
     return new
 end
 
+function util.mapv(fn, ...)
+    local tbl = { ... }
+    local new = util.map(tbl, fn)
+    return unpack(new)
+end
+
 function util.filter(tbl, fn)
     local new = { }
     for k, v in util.iterkv(tbl) do
@@ -120,6 +126,40 @@ function util.len(val)
     else
         return 0
     end
+end
+
+local function permutation(array, n, collect)
+    if n == 0 then
+        table.insert(collect, table.copy(array))
+    else
+        for i = 1, n do
+            array[i], array[n] = array[n], array[i]
+            permutation(array, n - 1, collect)
+            array[i], array[n] = array[n], array[i]
+        end
+    end
+end
+
+function util.permute(array)
+    local ret = { }
+
+    permutation(array, #array, ret)
+
+    return ret
+end
+
+function util.ipermute(array)
+    return util.itervk(util.permute(array))
+end
+
+function util.range(start, stop, step)
+    local ret = { }
+
+    for i = start, stop, step or 1 do
+        table.insert(ret, i)
+    end
+
+    return ret
 end
 
 local fs = require 'fs'
