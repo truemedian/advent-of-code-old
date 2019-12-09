@@ -6,7 +6,7 @@
 
 ]]
 
-local Intcode = require 'IntcodeInterpreter'
+local Intcode = require 'Intcode'
 
 local util = require('util')
 local input = util.get_input(module)
@@ -20,81 +20,46 @@ end
 
 local big1, big2 = 0, 0
 
-local A = Intcode(reg)
-local B = Intcode(reg)
-local C = Intcode(reg)
-local D = Intcode(reg)
-local E = Intcode(reg)
+local A = Intcode(reg, 'A')
+local B = Intcode(reg, 'B')
+local C = Intcode(reg, 'C')
+local D = Intcode(reg, 'D')
+local E = Intcode(reg, 'E')
 
 for data in util.ipermute(util.range(0, 4)) do
-    local setting_a, setting_b, setting_c, setting_d, setting_e = unpack(data)
+    local a, b, c, d, e = unpack(data)
 
-    A:reset()
-    B:reset()
-    C:reset()
-    D:reset()
-    E:reset()
+    Intcode.resetAll(A, B, C, D, E)
 
-    A:push(setting_a, 0)
-    A:run(true)
+    A:run(a, 0)
+    B:run(b, A)
+    C:run(c, B)
+    D:run(d, C)
+    E:run(e, D)
 
-    B:push(setting_b, A:check())
-    B:run(true)
-
-    C:push(setting_c, B:check())
-    C:run(true)
-
-    D:push(setting_d, C:check())
-    D:run(true)
-
-    E:push(setting_e, D:check())
-    E:run(true)
-
-    big1 = math.max(big1, E:check())
+    big1 = math.max(big1, E.value)
 end
 
 for data in util.ipermute(util.range(5, 9)) do
-    local setting_a, setting_b, setting_c, setting_d, setting_e = unpack(data)
+    local a, b, c, d, e = unpack(data)
 
-    A:reset()
-    B:reset()
-    C:reset()
-    D:reset()
-    E:reset()
+    Intcode.resetAll(A, B, C, D, E)
 
-    A:push(setting_a, 0)
-    A:run()
-
-    B:push(setting_b, A:check())
-    B:run()
-
-    C:push(setting_c, B:check())
-    C:run()
-
-    D:push(setting_d, C:check())
-    D:run()
-
-    E:push(setting_e, D:check())
-    E:run()
+    A:run(a, 0)
+    B:run(b, A)
+    C:run(c, B)
+    D:run(d, C)
+    E:run(e, D)
 
     repeat
-        A:push(E:check())
-        A:run()
+        A:run(E)
+        B:run(A)
+        C:run(B)
+        D:run(C)
+        E:run(D)
+    until E.done
 
-        B:push(A:check())
-        B:run()
-
-        C:push(B:check())
-        C:run()
-
-        D:push(C:check())
-        D:run()
-
-        E:push(D:check())
-        local done = E:run()
-    until done
-
-    big2 = math.max(big2, E:check())
+    big2 = math.max(big2, E.value)
 end
 
 print('Part 1:', big1)
