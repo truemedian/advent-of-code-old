@@ -12,10 +12,11 @@ pub fn build(b: *Builder) !void {
     const target = b.standardTargetOptions(.{});
     const mode = b.standardReleaseOptions();
 
-    var i: usize = 1;
-    while (i <= 25) : (i += 1) {
-        const name = try std.fmt.allocPrint(std.heap.page_allocator, "day-{d:0>2}", .{ i });
+    comptime var i = 1;
+    inline while (i <= 25) : (i += 1) {
+        const name = try std.fmt.allocPrint(std.heap.page_allocator, "d{d:0>2}", .{ i });
         const path = try std.fmt.allocPrint(std.heap.page_allocator, "{d:0>2}/main.zig", .{ i });
+        const desc = try std.fmt.allocPrint(std.heap.page_allocator, "Build & Run Day {d}", .{ i });
 
         const exe = b.addExecutable(name, path);
         exe.setTarget(target);
@@ -30,7 +31,7 @@ pub fn build(b: *Builder) !void {
             run_cmd.addArgs(args);
         }
 
-        const run_step = b.step(name, "Run Day");
+        const run_step = b.step(name, desc);
         run_step.dependOn(&run_cmd.step);
     }
 }
