@@ -18,7 +18,7 @@ pub fn main() !void {
                 std.debug.print("P1: {}\n", .{num1 * num2});
             }
 
-            for (list.items[y + 1 ..]) |num3, z| {
+            for (list.items[x + y + 1 ..]) |num3, z| {
                 if (num1 + num2 + num3 == 2020) {
                     std.debug.print("P2: {}\n", .{num1 * num2 * num3});
                 }
