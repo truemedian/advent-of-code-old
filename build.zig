@@ -14,9 +14,10 @@ pub fn build(b: *Builder) !void {
 
     comptime var i = 1;
     inline while (i <= 25) : (i += 1) {
-        const name = try std.fmt.allocPrint(std.heap.page_allocator, "d{d:0>2}", .{ i });
-        const path = try std.fmt.allocPrint(std.heap.page_allocator, "{d:0>2}/main.zig", .{ i });
-        const desc = try std.fmt.allocPrint(std.heap.page_allocator, "Build & Run Day {d}", .{ i });
+        // The OS frees memory for us when the build runner finishes
+        const name = try std.fmt.allocPrint(b.allocator, "d{d:0>2}", .{ i });
+        const path = try std.fmt.allocPrint(b.allocator, "{d:0>2}/main.zig", .{ i });
+        const desc = try std.fmt.allocPrint(b.allocator, "Build & Run Day {d}", .{ i });
 
         const exe = b.addExecutable(name, path);
         exe.setTarget(target);
