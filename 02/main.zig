@@ -3,22 +3,21 @@ usingnamespace @import("utils");
 
 pub fn main() !void {
     const input = try getFileSlice("02/input.txt");
-    const inputs = try splitOne(input, "\n");
+    const inputs = try splitAny(input, "\r\n");
 
     var total1: usize = 0;
     var total2: usize = 0;
     for (inputs) |sl| {
-        var next = try splitOne(sl, " ");
+        var next = try splitAny(sl, " -:");
 
-        var range = try splitOne(next[0], "-");
-        const min = try std.fmt.parseInt(usize, range[0], 10);
-        const max = try std.fmt.parseInt(usize, range[1], 10);
+        const min = try std.fmt.parseInt(usize, next[0], 10);
+        const max = try std.fmt.parseInt(usize, next[1], 10);
 
-        const char = next[1][0];
+        const char = next[2][0];
 
         // Part 1
         var count: usize = 0;
-        for (next[2]) |c| {
+        for (next[3]) |c| {
             if (c == char) {
                 count += 1;
             }
@@ -29,8 +28,8 @@ pub fn main() !void {
         }
 
         // Part 2
-        const c1 = next[2][min - 1] == char;
-        const c2 = next[2][max - 1] == char;
+        const c1 = next[3][min - 1] == char;
+        const c2 = next[3][max - 1] == char;
 
         if (c1 != c2) {
             total2 += 1;

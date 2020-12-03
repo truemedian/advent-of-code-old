@@ -59,8 +59,11 @@ pub fn splitAny(data: []const u8, delims: []const u8) ![][]const u8 {
     var ret = try allocator.alloc([]const u8, countAny(data, delims) + 1);
     var it = std.mem.tokenize(data, delims);
 
-    for (ret) |_, i| {
-        ret[i] = it.next() orelse unreachable;
+    // The countAny implementation doesn't ignore sequences of delimitors, while tokenize does, so this will fill as much as possible
+    var i: usize = 0;
+    while (it.next()) |v| {
+        ret[i] = v;
+        i += 1;
     }
 
     return ret;

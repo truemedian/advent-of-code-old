@@ -3,7 +3,7 @@ usingnamespace @import("utils");
 
 pub fn main() !void {
     const input = try getFileSlice("01/input.txt");
-    const inputs = try splitOne(input, "\n");
+    const inputs = try splitAny(input, "\r\n");
 
     var list = std.ArrayList(usize).init(allocator);
 
