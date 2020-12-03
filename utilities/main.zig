@@ -10,7 +10,8 @@ pub var allocator_instance = std.heap.GeneralPurposeAllocator(.{
 pub fn getFileSlice(name: []const u8) ![]const u8 {
     const file = try fs.cwd().openFile(name, .{});
 
-    return file.reader().readAllAlloc(allocator, 4 * 1024 * 1024);
+    const data = try file.reader().readAllAlloc(allocator, 4 * 1024 * 1024);
+    return std.mem.trim(u8, data, &std.ascii.spaces);
 }
 
 pub fn getFileReader(name: []const u8) !fs.File.Reader {
