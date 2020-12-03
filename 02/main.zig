@@ -1,16 +1,16 @@
 const std = @import("std");
-const utils = @import("utils");
+usingnamespace @import("utils");
 
 pub fn main() !void {
-    const input = try utils.getFileSlice("02/input.txt");
-    const inputs = try utils.split(input, "\n");
+    const input = try getFileSlice("02/input.txt");
+    const inputs = try splitOne(input, "\n");
 
     var total1: usize = 0;
     var total2: usize = 0;
     for (inputs) |sl| {
-        var next = try utils.split(sl, " ");
+        var next = try splitOne(sl, " ");
 
-        var range = try utils.split(next[0], "-");
+        var range = try splitOne(next[0], "-");
         const min = try std.fmt.parseInt(usize, range[0], 10);
         const max = try std.fmt.parseInt(usize, range[1], 10);
 

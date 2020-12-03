@@ -1,11 +1,11 @@
 const std = @import("std");
-const utils = @import("utils");
+usingnamespace @import("utils");
 
 pub fn main() !void {
-    const input = try utils.getFileSlice("01/input.txt");
-    const inputs = try utils.split(input, "\n");
+    const input = try getFileSlice("01/input.txt");
+    const inputs = try splitOne(input, "\n");
 
-    var list = std.ArrayList(usize).init(utils.allocator);
+    var list = std.ArrayList(usize).init(allocator);
 
     for (inputs) |num| {
         const n = try std.fmt.parseInt(usize, num, 10);
