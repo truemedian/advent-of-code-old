@@ -68,3 +68,11 @@ pub fn splitAny(data: []const u8, delims: []const u8) ![][]const u8 {
 
     return ret;
 }
+
+pub fn parseIntSigned(buffer: []const u8, radix: u8) !i64 {
+    return std.fmt.parseInt(i64, buffer, radix);
+}
+
+pub fn parseInt(buffer: []const u8, radix: u8) !u64 {
+    return std.fmt.parseInt(u64, buffer, radix);
+}
