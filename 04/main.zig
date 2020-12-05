@@ -51,6 +51,6 @@ pub fn main() !void {
         }
     }
 
-    std.debug.print("{}\n", .{valid1});
-    std.debug.print("{}\n", .{valid2});
+    std.debug.print("P1: {}\n", .{valid1});
+    std.debug.print("P2: {}\n", .{valid2});
 }
