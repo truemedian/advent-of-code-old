@@ -11,38 +11,14 @@ pub fn main() !void {
     var seats = std.mem.zeroes([127 * 8 + 7]bool);
 
     for (inputs) |line| {
-        var row: usize = 0;
-        var col: usize = 0;
+        var id: usize = 0;
 
-        var hi: usize = 127;
-        var lo: usize = 0;
-
-        for (line[0..7]) |c| {
-            if (c == 'F') {
-                hi = (lo + hi) / 2;
-            } else if (c == 'B') {
-                lo = (lo + hi) / 2 + 1;
-            } else unreachable;
+        for (line) |c| {
+            id <<= 1;
+            id |= @boolToInt(c == 'B' or c == 'R');
         }
-
-        row = lo;
-
-        hi = 7;
-        lo = 0;
-
-        for (line[7..]) |c| {
-            if (c == 'L') {
-                hi = (lo + hi) / 2;
-            } else if (c == 'R') {
-                lo = (lo + hi) / 2 + 1;
-            } else unreachable;
-        }
-
-        col = lo;
-
-        const id = row * 8 + col;
+        
         seats[id] = true;
-
         total1 = std.math.max(total1, id);
     }
 
