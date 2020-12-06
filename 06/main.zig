@@ -8,8 +8,8 @@ pub fn main() !void {
     var total1: usize = 0;
     var total2: usize = 0;
 
-    for (inputs) |line| {
-        const people = try splitOne(line, "\n");
+    for (inputs) |batch| {
+        const people = try splitOne(batch, "\n");
 
         var map = std.AutoHashMap(u8, usize).init(allocator);
 
