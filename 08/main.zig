@@ -163,6 +163,7 @@ pub fn main() !void {
 
             if (finished) {
                 total2 = vm.accumulator;
+                break;
             }
         }
     }
