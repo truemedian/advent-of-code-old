@@ -17,10 +17,13 @@ fn countTrees(map: [][]const u8, inc_x: usize, int_y: usize) usize {
 }
 
 pub fn main() !void {
+    try Benchmark.init();
+
     const input = try getFileSlice("03/input.txt");
     const inputs = try splitAny(input, "\r\n");
     
-    try Benchmark.init();
+    Benchmark.read().print("File");
+    Benchmark.reset();
 
     const count13 = countTrees(inputs, 1, 3);
 

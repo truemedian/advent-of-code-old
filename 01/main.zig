@@ -2,16 +2,18 @@ const std = @import("std");
 usingnamespace @import("utils");
 
 pub fn main() !void {
+    try Benchmark.init();
+
     const input = try getFileSlice("01/input.txt");
     const inputs = try splitAny(input, "\r\n");
 
-    var list = std.ArrayList(usize).init(allocator);
+    Benchmark.read().print("File");
+    Benchmark.reset();
 
-    try Benchmark.init();
+    var list: [200]u32 = undefined;
 
-    for (inputs) |num| {
-        const n = try std.fmt.parseInt(usize, num, 10);
-        try list.append(n);
+    for (inputs) |num, i| {
+        list[i] = try std.fmt.parseInt(u32, num, 10);
     }
 
     Benchmark.read().print("Input");
@@ -20,13 +22,13 @@ pub fn main() !void {
     var total1: usize = 0;
     var total2: usize = 0;
 
-    for (list.items) |num1, x| {
-        for (list.items[x + 1 ..]) |num2, y| {
+    for (list) |num1, x| {
+        for (list[x + 1 ..]) |num2, y| {
             if (num1 + num2 == 2020) {
                 total1 = num1 * num2;
             }
 
-            for (list.items[x + y + 1 ..]) |num3, z| {
+            for (list[x + y + 1 ..]) |num3, z| {
                 if (num1 + num2 + num3 == 2020) {
                     total2 = num1 * num2 * num3;
                 }

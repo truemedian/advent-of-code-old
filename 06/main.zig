@@ -2,31 +2,34 @@ const std = @import("std");
 usingnamespace @import("utils");
 
 pub fn main() !void {
+    try Benchmark.init();
+
     const input = try getFileSlice("06/input.txt");
     const inputs = try splitOne(input, "\n\n");
+
+    Benchmark.read().print("File");
+    Benchmark.reset();
 
     var total1: usize = 0;
     var total2: usize = 0;
 
-    try Benchmark.init();
-
     for (inputs) |batch| {
-        const people = try splitOne(batch, "\n");
+        var people = mem.split(batch, "\n");
 
-        var map = std.AutoHashMap(u8, usize).init(allocator);
+        var map = mem.zeroes([26]u32);
+        var count: u32 = 0;
 
-        for (people) |answered| {
+        while (people.next()) |answered| {
+            count += 1;
             for (answered) |question| {
-                var entry = try map.getOrPutValue(question, 0);
-                entry.*.value = entry.value + 1;
+                map[question - 'a'] += 1;
             }
         }
 
-        var it = map.iterator();
-        while (it.next()) |entry| {
-            total1 += 1;
+        for (map) |entry| {
+            if (entry > 0) total1 += 1;
 
-            if (entry.value == people.len) {
+            if (entry == count) {
                 total2 += 1;
             }
         }

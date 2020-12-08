@@ -1,4 +1,5 @@
 const std = @import("std");
+pub const mem = std.mem;
 
 const fs = std.fs;
 
@@ -97,6 +98,7 @@ pub const Benchmark = struct {
                 \\Benchmark {}:
                 \\  Time:   {}s {}ms {}us {}ns
                 \\  Memory: {}MB {}KB {}B
+                \\
                 \\
             , .{ name, seconds, milliseconds, microseconds, nanoseconds, megabytes, kilobytes, bytes });
         }

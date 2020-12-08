@@ -2,15 +2,18 @@ const std = @import("std");
 usingnamespace @import("utils");
 
 pub fn main() !void {
+    try Benchmark.init();
+
     const input = try getFileSlice("05/input.txt");
     const inputs = try splitOne(input, "\n");
+
+    Benchmark.read().print("File");
+    Benchmark.reset();
 
     var total1: usize = 0;
     var total2: usize = 0;
 
     var seats = std.mem.zeroes([127 * 8 + 7]bool);
-
-    try Benchmark.init();
 
     for (inputs) |line| {
         var id: usize = 0;

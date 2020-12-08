@@ -2,24 +2,28 @@ const std = @import("std");
 usingnamespace @import("utils");
 
 pub fn main() !void {
+    try Benchmark.init();
+
     const input = try getFileSlice("02/input.txt");
     const inputs = try splitAny(input, "\r\n");
 
-    try Benchmark.init();
+    Benchmark.read().print("File");
+    Benchmark.reset();
 
     var total1: usize = 0;
     var total2: usize = 0;
     for (inputs) |sl| {
-        var next = try splitAny(sl, " -:");
+        var it = mem.tokenize(sl, " -:");
 
-        const min = try std.fmt.parseInt(usize, next[0], 10);
-        const max = try std.fmt.parseInt(usize, next[1], 10);
+        const min = try std.fmt.parseInt(u32, it.next().?, 10);
+        const max = try std.fmt.parseInt(u32, it.next().?, 10);
 
-        const char = next[2][0];
+        const char = it.next().?[0];
+        const word = it.next().?;
 
         // Part 1
         var count: usize = 0;
-        for (next[3]) |c| {
+        for (word) |c| {
             if (c == char) {
                 count += 1;
             }
@@ -30,8 +34,8 @@ pub fn main() !void {
         }
 
         // Part 2
-        const c1 = next[3][min - 1] == char;
-        const c2 = next[3][max - 1] == char;
+        const c1 = word[min - 1] == char;
+        const c2 = word[max - 1] == char;
 
         if (c1 != c2) {
             total2 += 1;

@@ -33,37 +33,57 @@ const Bag = struct {
     count: usize,
 };
 
-const BagList = std.ArrayList(Bag);
 const BagMap = std.StringHashMap([]Bag);
 
 pub fn main() !void {
+    try Benchmark.init();
+
     const input = try getFileSlice("07/input.txt");
     const inputs = try splitOne(input, "\n");
 
-    try Benchmark.init();
+    Benchmark.read().print("File");
+    Benchmark.reset();
 
     var total1: usize = 0;
 
     var map = BagMap.init(allocator);
+    try map.ensureCapacity(1024);
     for (inputs) |line| {
-        const what = try splitAny(line, " ,.");
+        var what = mem.tokenize(line, " ,.");
 
-        const container = try std.mem.join(allocator, " ", what[0..2]);
+        _ = what.next();
+        _ = what.next();
 
-        var list = BagList.init(allocator);
+        const contain_index = what.index;
 
-        var i: usize = 4;
-        while (i + 4 < what.len) : (i += 4) {
-            const bag = try std.mem.join(allocator, " ", what[i + 1 .. i + 3]);
-            const num = try std.fmt.parseUnsigned(usize, what[i], 10);
+        _ = what.next();
+        _ = what.next();
 
-            try list.append(.{
+        const container = line[0..contain_index];
+
+        var list = try allocator.alloc(Bag, 6);
+
+        var n: usize = 0;
+        while (true) : (n += 1) {
+            const before = what.index;
+            _ = what.next() orelse break;
+            const num_index = what.index;
+            _ = what.next();
+            _ = what.next();
+            const name_index = what.index;
+            _ = what.next() orelse break;
+
+            const num_shift: usize = if (n == 0) 1 else 2;
+            const bag = line[num_index + 1 .. name_index];
+            const num = try std.fmt.parseUnsigned(usize, line[before + num_shift .. num_index], 10);
+
+            list[n] = .{
                 .name = bag,
                 .count = num,
-            });
+            };
         }
 
-        try map.put(container, list.items);
+        map.putAssumeCapacity(container, list[0..n]);
     }
 
     Benchmark.read().print("Input");
