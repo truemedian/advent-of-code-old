@@ -6,6 +6,8 @@ pub fn main() !void {
     const input = try getFileSlice("04/input.txt");
     const inputs = try splitOne(input, "\n\n");
 
+    try Benchmark.init();
+
     var valid1: usize = 0;
     var valid2: usize = 0;
     for (inputs) |pp| {
@@ -50,6 +52,9 @@ pub fn main() !void {
                 valid2 += 1;
         }
     }
+    
+    Benchmark.read().print("Part 1 & 2");
+    Benchmark.reset();
 
     std.debug.print("P1: {}\n", .{valid1});
     std.debug.print("P2: {}\n", .{valid2});

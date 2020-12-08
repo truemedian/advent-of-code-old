@@ -8,6 +8,8 @@ pub fn main() !void {
     var total1: usize = 0;
     var total2: usize = 0;
 
+    try Benchmark.init();
+
     for (inputs) |batch| {
         const people = try splitOne(batch, "\n");
 
@@ -29,6 +31,9 @@ pub fn main() !void {
             }
         }
     }
+
+    Benchmark.read().print("Part 1 & 2");
+    Benchmark.reset();
 
     std.debug.print("P1: {}\n", .{total1});
     std.debug.print("P2: {}\n", .{total2});

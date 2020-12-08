@@ -19,12 +19,21 @@ fn countTrees(map: [][]const u8, inc_x: usize, int_y: usize) usize {
 pub fn main() !void {
     const input = try getFileSlice("03/input.txt");
     const inputs = try splitAny(input, "\r\n");
+    
+    try Benchmark.init();
 
     const count13 = countTrees(inputs, 1, 3);
+
+    Benchmark.read().print("Part 1");
+    Benchmark.reset();
+
     const count11 = countTrees(inputs, 1, 1);
     const count15 = countTrees(inputs, 1, 5);
     const count17 = countTrees(inputs, 1, 7);
     const count21 = countTrees(inputs, 2, 1);
+    
+    Benchmark.read().print("Part 2");
+    Benchmark.reset();
 
     std.debug.print("P1: {}\n", .{count13});
     std.debug.print("P2: {}\n", .{count11 * count13 * count15 * count17 * count21});

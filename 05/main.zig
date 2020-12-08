@@ -10,6 +10,8 @@ pub fn main() !void {
 
     var seats = std.mem.zeroes([127 * 8 + 7]bool);
 
+    try Benchmark.init();
+
     for (inputs) |line| {
         var id: usize = 0;
 
@@ -22,6 +24,9 @@ pub fn main() !void {
         total1 = std.math.max(total1, id);
     }
 
+    Benchmark.read().print("Part 1");
+    Benchmark.reset();
+
     var r: usize = 1;
     while (r < 127) : (r += 1) {
         var c: usize = 0;
@@ -33,6 +38,9 @@ pub fn main() !void {
             }
         }
     }
+
+    Benchmark.read().print("Part 2");
+    Benchmark.reset();
 
     std.debug.print("P1: {}\n", .{total1});
     std.debug.print("P2: {}\n", .{total2});

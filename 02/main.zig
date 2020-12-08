@@ -5,6 +5,8 @@ pub fn main() !void {
     const input = try getFileSlice("02/input.txt");
     const inputs = try splitAny(input, "\r\n");
 
+    try Benchmark.init();
+
     var total1: usize = 0;
     var total2: usize = 0;
     for (inputs) |sl| {
@@ -35,6 +37,9 @@ pub fn main() !void {
             total2 += 1;
         }
     }
+
+    Benchmark.read().print("Part 1 & 2");
+    Benchmark.reset();
 
     std.debug.print("P1: {}\n", .{total1});
     std.debug.print("P2: {}\n", .{total2});
