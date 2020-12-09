@@ -32,14 +32,14 @@ pub fn main() !void {
             var parts = mem.split(v, ":");
 
             const name = parts.next().?;
-            inline for (std.meta.fields(Passport)) |field| {
+            inline for (meta.fields(Passport)) |field| {
                 if (mem.eql(u8, field.name, name)) {
                     @field(pass, field.name) = parts.next().?;
                 }
             }
         }
 
-        inline for (std.meta.fields(Passport)) |field| {
+        inline for (meta.fields(Passport)) |field| {
             if (@field(pass, field.name) == null) {
                 continue :inputblk;
             }

@@ -1,7 +1,11 @@
 const std = @import("std");
+
 pub const mem = std.mem;
+pub const meta = std.meta;
 
 const fs = std.fs;
+
+pub const Handheld = @import("handheld.zig");
 
 pub const allocator = &allocator_instance.allocator;
 pub var allocator_instance = std.heap.GeneralPurposeAllocator(.{
