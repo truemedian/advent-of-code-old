@@ -21,7 +21,7 @@ pub fn main() !void {
 
     const input = try getFileSlice("03/input.txt");
     const inputs = try splitAny(input, "\r\n");
-    
+
     Benchmark.read().print("File");
     Benchmark.reset();
 
@@ -34,7 +34,7 @@ pub fn main() !void {
     const count15 = countTrees(inputs, 1, 5);
     const count17 = countTrees(inputs, 1, 7);
     const count21 = countTrees(inputs, 2, 1);
-    
+
     Benchmark.read().print("Part 2");
     Benchmark.reset();
 
