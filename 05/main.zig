@@ -22,7 +22,7 @@ pub fn main() !void {
             id <<= 1;
             id |= @boolToInt(c == 'B' or c == 'R');
         }
-        
+
         seats[id] = true;
         total1 = std.math.max(total1, id);
     }
