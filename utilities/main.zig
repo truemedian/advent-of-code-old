@@ -129,3 +129,52 @@ pub const Benchmark = struct {
         };
     }
 };
+
+pub fn countCombinations(comptime T: type, comptime range: usize, slice: []const T) usize {
+    var n: usize = slice.len;
+    var d: usize = range;
+
+    comptime var i = 1;
+    inline while (i < range) : (i += 1) {
+        n *= slice.len - i;
+        d *= i;
+    }
+
+    return n / d;
+}
+
+pub fn combinations(comptime T: type, comptime range: usize, slice: []const T) ![][range]T {
+    const len = countCombinations(T, range, slice);
+
+    var ret = try allocator.alloc([range]T, len);
+
+    var indices: [range]usize = undefined;
+    for (indices) |*c, i| {
+        c.* = i;
+    }
+
+    ret[0] = slice[0..range].*;
+    for (ret[1..]) |*c, n| {
+        var i: usize = range - 1;
+        blk: {
+            while (i > 0) : (i -= 1) if (i + n >= range and indices[i] != i + n - range) break :blk;
+            return ret;
+        }
+
+        indices[i] += 1;
+
+        i += 1;
+        while (i < range) : (i += 1) {
+            indices[i] = indices[i - 1] + 1;
+        }
+
+        var next: [range]T = undefined;
+        for (indices) |j, x| {
+            next[x] = slice[j];
+        }
+
+        ret[n] = next;
+    }
+
+    unreachable;
+}
